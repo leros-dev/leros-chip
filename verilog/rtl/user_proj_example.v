@@ -103,6 +103,9 @@ module user_proj_example #(
     // Assuming LA probes [65:64] are for controlling the count clk & reset  
     assign clk = (~la_oenb[64]) ? la_data_in[64]: wb_clk_i;
     assign rst = (~la_oenb[65]) ? la_data_in[65]: wb_rst_i;
+    
+    wire [31:0] leros_out;
+
 
     counter #(
         .BITS(BITS)
@@ -118,6 +121,20 @@ module user_proj_example #(
         .la_input(la_data_in[63:32]),
         .count(count)
     );
+ 
+    
+    LerosFsmd LerosFsmd(
+           .clock(clk),
+           .reset(rst),
+           .io_dout(leros_out)
+
+           /*
+  output [31:0] io_dbg_acc,
+  output [9:0]  io_dbg_pc,
+  output [15:0] io_dbg_instr,
+  output        io_dbg_exit
+  */
+);
 
 endmodule
 
